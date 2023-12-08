@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useLayoutEffect, useCallback } from "react";
 import { GiftedChat } from "react-native-gifted-chat";
 import { TouchableOpacity, Text } from "react-native";
-import { collection, addDoc, orderBy, query, onSnapshot } from "firebase/firestore";
+import { collection, addDoc, orderBy, query, onSnapshot, doc } from "firebase/firestore";
 import { signOut } from "firebase/auth";
 import { auth, database } from "../config";
 import { useNavigation } from "@react-navigation/native";
@@ -30,7 +30,7 @@ export default function Chat() {
     const q = query(collectionRef, orderBy("createdAt", "desc"));
   
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      console.log("snapshot");
+      console.log('snapshot');
       setMessages(
         snapshot.docs.map((doc) => ({
           _id: doc.id, // Sử dụng doc.id như làm định danh duy nhất

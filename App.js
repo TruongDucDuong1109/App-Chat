@@ -28,8 +28,6 @@ const AuthenticateUserProvider = ({children}) => {
 function ChatStack () {
   return (
     <Stack.Navigator >
-      {/* <Stack.Screen name="Signup" component={Signup} />
-      <Stack.Screen name="Login" component={Login} /> */}
       <Stack.Screen name="Chat" component={Chat} />
     </Stack.Navigator>
   )
@@ -37,7 +35,9 @@ function ChatStack () {
 
 function AuthStack () {
   return (
-    <Stack.Navigator defaultScreenOptions ={Login} screenOptions={ {headerShown: false}}>
+    <Stack.Navigator initialRouteName="Login" screenOptions={{
+      headerShown: false, 
+    }}>
       <Stack.Screen name="Signup" component={Signup} />
       <Stack.Screen name="Login" component={Login} />
     </Stack.Navigator>
