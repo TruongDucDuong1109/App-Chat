@@ -10,22 +10,23 @@ import Adddata from './src';
 import Signup from './screens/Signup';
 import { createContext, useEffect, useState, useContext } from 'react';
 import { auth } from './config';
-
+import { store } from './redux/store';
+import { Provider, useSelector, useDispatch } from 'react-redux';
 
 
 const Stack = createStackNavigator();
-const AuthenticateUserContext = createContext({});
+// const AuthenticateUserContext = createContext({});
 
-const AuthenticateUserProvider = ({children}) => {
-  const [user, setUser] = useState(null);
-  return (
-    <AuthenticateUserContext.Provider value={{user, setUser}}>
-      {children}
-    </AuthenticateUserContext.Provider>
-  )
-};
+// const AuthenticateUserProvider = ({ children }) => {
+//   const [user, setUser] = useState(null);
+//   return (
+//     <AuthenticateUserContext.Provider value={{ user, setUser }}>
+//       {children}
+//     </AuthenticateUserContext.Provider>
+//   )
+// };
 
-function ChatStack () {
+function ChatStack() {
   return (
     <Stack.Navigator >
       <Stack.Screen name="Chat" component={Chat} />
@@ -33,10 +34,10 @@ function ChatStack () {
   )
 }
 
-function AuthStack () {
+function AuthStack() {
   return (
     <Stack.Navigator initialRouteName="Login" screenOptions={{
-      headerShown: false, 
+      headerShown: false,
     }}>
       <Stack.Screen name="Signup" component={Signup} />
       <Stack.Screen name="Login" component={Login} />
@@ -45,41 +46,43 @@ function AuthStack () {
 }
 
 function RootNavigator() {
-  const {user, setUser} = useContext(AuthenticateUserContext);
+  const { user } = useSelector(state => state.user);
   const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => { 
+  const dispatch = useDispatch();
+  useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth,
       async authenticatedUser => {
         authenticatedUser ? setUser(authenticatedUser) : setUser(null);
         setIsLoading(false);
       }
-    );
+    ); 
     return () => unsubscribe();
   }, [user]);
 
   if (isLoading) {
     return (
-      <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-        <ActivityIndicator size="large" color="blue"/>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color="blue" />
       </View>
     )
   }
 
   return (
     <NavigationContainer>
-      {user ? <ChatStack/> : <AuthStack/>}
+      {user ? <ChatStack /> : <AuthStack />}
     </NavigationContainer>
   )
 }
 
 export default function App() {
   return (
-    <AuthenticateUserProvider>
-      <RootNavigator/>
-    </AuthenticateUserProvider>
+    // <AuthenticateUserProvider>
+    //   <RootNavigator />
+    // </AuthenticateUserProvider>
+    <Provider store={store}>
+      <RootNavigator />
+    </Provider>
   )
-    
-
 }
 
 
