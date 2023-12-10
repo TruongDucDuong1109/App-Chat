@@ -9,6 +9,7 @@ import Chat from './screens/Chat';
 import Adddata from './src';
 import Signup from './screens/Signup';
 import { createContext, useEffect, useState, useContext } from 'react';
+import { setUser } from './redux/slices/user';
 import { auth } from './config';
 import { store } from './redux/store';
 import { Provider, useSelector, useDispatch } from 'react-redux';
@@ -52,10 +53,10 @@ function RootNavigator() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth,
       async authenticatedUser => {
-        authenticatedUser ? setUser(authenticatedUser) : setUser(null);
+        authenticatedUser ? dispatch(setUser(authenticatedUser)) : dispatch(setUser(null));
         setIsLoading(false);
       }
-    ); 
+    );
     return () => unsubscribe();
   }, [user]);
 
