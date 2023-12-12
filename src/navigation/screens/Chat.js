@@ -13,7 +13,8 @@ export default function Chat() {
   const navigation = useNavigation();
 
   const onSignOut = () => {
-    signOut(auth).catch((error) => console.log(error));
+    signOut(auth)
+      .catch((error) => console.log(error));
   };
 
   useLayoutEffect(() => {

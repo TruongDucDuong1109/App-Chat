@@ -14,13 +14,10 @@ export default function RootNavigator() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth,
-            async authenticatedUser => {
-                authenticatedUser ? dispatch(setUser(authenticatedUser)) : dispatch(setUser(null));
-                setIsLoading(false);
-            }
-        );
-        return () => unsubscribe();
+        onAuthStateChanged(auth, u => {
+            console.log('user', u);
+            dispatch(setUser(u));
+        });
     }, [user]);
 
     if (isLoading) {
