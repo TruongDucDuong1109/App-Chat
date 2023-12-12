@@ -1,12 +1,13 @@
-import React from "react";
+import { useState } from "react";
 import { Alert, StyleSheet, Image, Text, Button, TextInput, View, SafeAreaView } from "react-native";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../../config";
 import { TouchableOpacity } from "react-native-gesture-handler";
-const backImage = require("../assets/background.jpg");
+// const backImage = require("../assets/background.jpg");
+
 export default function Login({ navigation }) {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const onHandleLogin = () => {
     if (email !== "" && password !== "") {

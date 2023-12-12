@@ -4,9 +4,9 @@ import {
   Button, TextInput, View, SafeAreaView
 } from "react-native";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../config";
+import { auth } from "../../../config";
 import { TouchableOpacity } from "react-native-gesture-handler";
-const backImage = require("../assets/background.jpg");
+// const backImage = require("../assets/background.jpg");
 
 export default function Signup({ navigation }) {
   const [email, setEmail] = useState("");

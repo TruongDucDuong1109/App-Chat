@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react';
 import { setUser } from '../redux/slices/user';
 import { auth } from '../../config';
 import { useSelector, useDispatch } from 'react-redux';
+import AuthStack from './stacks/AuthStack';
+import ChatStack from './stacks/ChatStack';
 
 export default function RootNavigator() {
     const { user } = useSelector(state => state.user);
