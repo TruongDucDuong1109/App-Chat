@@ -7,10 +7,12 @@ import { auth, database } from "../../../config";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import { sendMessage } from "../../redux/slices/messageSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Chat() {
-  const [messages, setMessages] = useState([]);
+  const { message } = useSelector(state => state.message);
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const onSignOut = () => {
     signOut(auth).catch((error) => console.log(error));
@@ -24,38 +26,37 @@ export default function Chat() {
         </TouchableOpacity>
       ),
     });
-  }, [navigation]);
-
-  useLayoutEffect(() => {
-    const collectionRef = collection(database, "chats");
-    const q = query(collectionRef, orderBy("createdAt", "desc"));
-
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      console.log('snapshot');
-      sendMessage(
-        snapshot.docs.map((doc) => ({
-          _id: doc.id, // Sử dụng doc.id như làm định danh duy nhất
-          createdAt: doc.data().createdAt.toDate(),
-          text: doc.data().text,
-          user: doc.data().user,
-        }))
-      );
-    });
-    return () => unsubscribe();
   }, []);
+
+  // useLayoutEffect(() => {
+  //   const collectionRef = collection(database, "chats");
+  //   const q = query(collectionRef, orderBy("createdAt", "desc"));
+
+  //   const unsubscribe = onSnapshot(q, (snapshot) => {
+  //     dispatch(sendMessage(
+  //       snapshot.docs.map((doc) => ({
+  //         _id: doc.id, // Sử dụng doc.id như làm định danh duy nhất
+  //         createdAt: doc.data().createdAt.toDate(),
+  //         text: doc.data().text,
+  //         user: doc.data().user,
+  //       }))
+  //     ))
+  //   });
+  //   return () => unsubscribe();
+  // }, []);
 
   const onSend = useCallback(
     async (messages = []) => {
-      sendMessage((previousMessages) => GiftedChat.append(previousMessages, messages));
+      dispatch(sendMessage(messages))
       const { _id, createdAt, text, user } = messages[0];
-      addDoc(collection(database, "chats"), {
+      await addDoc(collection(database, "chats"), {
         _id, createdAt, text, user,
       });
     }, []);
 
   return (
     <GiftedChat
-      messages={messages}
+      messages={message}
       onSend={(newMessages) => onSend(newMessages)}
       user={{
         _id: auth?.currentUser?.email,

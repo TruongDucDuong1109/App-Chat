@@ -2,7 +2,7 @@ import { View, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
-import { setUser } from '../redux/slices/user';
+import { setUser } from '../redux/slices/userSlice';
 import { auth } from '../../config';
 import { useSelector, useDispatch } from 'react-redux';
 import AuthStack from './stacks/AuthStack';
@@ -14,13 +14,12 @@ export default function RootNavigator() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth,
+        onAuthStateChanged(auth,
             async authenticatedUser => {
                 authenticatedUser ? dispatch(setUser(authenticatedUser)) : dispatch(setUser(null));
                 setIsLoading(false);
             }
         );
-        return () => unsubscribe();
     }, [user]);
 
     if (isLoading) {

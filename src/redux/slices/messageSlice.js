@@ -1,16 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { GiftedChat } from 'react-native-gifted-chat';
 
 const initialState = {
-    messsage: null,
-    messsageLoading: false,
+    message: [],
 }
 
 export const messageSlice = createSlice({
-    name: 'messsage',
+    name: 'message',
     initialState,
     reducers: {
         sendMessage(state, action) {
-            state.messsage = action.payload
+            state.message = GiftedChat.append(state.message, action.payload)
         },
     },
 })
