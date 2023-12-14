@@ -8,10 +8,10 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
-  const onHandleLogin = () => {
-    if (email !== "" && password !== "") {
-      signInWithEmailAndPassword(auth, email, password)
+
+  const onHandleLogin = async () => {
+    if (email && password) {
+      await signInWithEmailAndPassword(auth, email, password)
         .then(() => console.log("Đăng nhập thành công!"))
         .catch((error) => Alert.alert("Đăng nhập thất bại", error.message));
     }

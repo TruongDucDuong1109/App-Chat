@@ -15,7 +15,8 @@ export default function Chat() {
   const dispatch = useDispatch();
 
   const onSignOut = () => {
-    signOut(auth).catch((error) => console.log(error));
+    signOut(auth)
+      .catch((error) => console.log(error));
   };
 
   useLayoutEffect(() => {
